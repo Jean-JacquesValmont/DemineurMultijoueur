@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="DemineurMultijoueur"
-run/main_scene="res://Scene/Game.tscn"
+run/main_scene="res://Scene/Menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GlobalVariable="*res://Script/GlobalVariable.gd"
 
 [display]
 

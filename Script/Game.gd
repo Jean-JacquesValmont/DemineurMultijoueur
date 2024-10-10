@@ -13,14 +13,20 @@ func _process(delta):
 		createGameBoard()
 
 func createGameBoard():
-	for i in range(0,5):
-		for j in range(0,5):
+	for i in range(0,GlobalVariable.column):
+		for j in range(0,GlobalVariable.line):
 			# Créer une instance de la scène Square
 			var square_instance = NewSquare.instantiate()
 			
 			# Définir la position de l'instance
-			square_instance.position = Vector2(i*50, j*50)
+			square_instance.position = Vector2(100 + i*50, 100 + j*50)
 			
 			# Ajouter l'instance comme enfant de ce nœud
-			get_parent().add_child(square_instance)
+			add_child(square_instance)
 	BoardCreated = true
+
+func _on_button_pressed():
+	GlobalVariable.line = 5
+	GlobalVariable.column = 5
+	GlobalVariable.bomb = 1
+	get_tree().change_scene_to_file("res://Scene/Menu.tscn")
