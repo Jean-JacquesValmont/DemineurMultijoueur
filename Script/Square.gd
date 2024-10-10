@@ -12,4 +12,22 @@ func _process(delta):
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		print("mouse use")
+		if GlobalVariable.firstSquareClicked == false:
+			get_node("SquareEmpty").visible = true
+			placeBombs(GlobalVariable.bomb)
+			GlobalVariable.firstSquareClicked = true
+		else:
+			get_node("SquareEmpty").visible = true
+
+# Placer aléatoirement les bombes dans le tableau
+func placeBombs(numberOfBomb):
+	var placed_bombs = 0
+	while placed_bombs < numberOfBomb:
+		var random_row = randi() % int(GlobalVariable.line)
+		var random_col = randi() % int(GlobalVariable.column)
+
+		# Vérifie s'il n'y a pas déjà une bombe à cette position
+		if GlobalVariable.boardGame[random_row][random_col] != "bomb":
+			GlobalVariable.boardGame[random_row][random_col] = "bomb"
+			placed_bombs += 1
+	print("Bombs placed:", GlobalVariable.boardGame)

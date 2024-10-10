@@ -1,8 +1,10 @@
 extends Node
 
+var boardGame = []
 var line = 5
 var column = 5
-var bomb = 5
+var bomb = 1
+var firstSquareClicked = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

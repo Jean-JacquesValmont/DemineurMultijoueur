@@ -10,7 +10,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if BoardCreated == false:
+		createBoardArray(GlobalVariable.line,GlobalVariable.column)
 		createGameBoard()
+		BoardCreated = true
 
 func createGameBoard():
 	for i in range(0,GlobalVariable.column):
@@ -23,10 +25,19 @@ func createGameBoard():
 			
 			# Ajouter l'instance comme enfant de ce nœud
 			add_child(square_instance)
-	BoardCreated = true
+
+func createBoardArray(rowSize,columnSize):
+	for i in range(rowSize):
+		var row = []
+		for j in range(columnSize):
+			row.append(null)
+		GlobalVariable.boardGame.append(row)
+	#print(GlobalVariable.boardGame)
 
 func _on_button_pressed():
+	GlobalVariable.boardGame = []
 	GlobalVariable.line = 5
 	GlobalVariable.column = 5
 	GlobalVariable.bomb = 1
+	GlobalVariable.firstSquareClicked = false
 	get_tree().change_scene_to_file("res://Scene/Menu.tscn")
