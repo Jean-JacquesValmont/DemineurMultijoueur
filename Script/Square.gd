@@ -1,10 +1,11 @@
 extends Sprite2D
 
+var i = null
+var j = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -16,18 +17,26 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 			get_node("SquareEmpty").visible = true
 			placeBombs(GlobalVariable.bomb)
 			GlobalVariable.firstSquareClicked = true
+			print("i: ", i)
+			print("j: ", j)
 		else:
-			get_node("SquareEmpty").visible = true
+			if GlobalVariable.boardGame[i][j] == null:
+				get_node("SquareEmpty").visible = true
+			else:
+				get_node("SquareWithBomb").visible = true
+			print("i: ", i)
+			print("j: ", j)
+	
 
 # Placer aléatoirement les bombes dans le tableau
 func placeBombs(numberOfBomb):
-	var placed_bombs = 0
-	while placed_bombs < numberOfBomb:
+	var placedBombs = 0
+	while placedBombs < numberOfBomb:
 		var random_row = randi() % int(GlobalVariable.line)
 		var random_col = randi() % int(GlobalVariable.column)
 
 		# Vérifie s'il n'y a pas déjà une bombe à cette position
-		if GlobalVariable.boardGame[random_row][random_col] != "bomb":
+		if GlobalVariable.boardGame[random_row][random_col] != "bomb" and random_row != i and random_col != j:
 			GlobalVariable.boardGame[random_row][random_col] = "bomb"
-			placed_bombs += 1
+			placedBombs += 1
 	print("Bombs placed:", GlobalVariable.boardGame)

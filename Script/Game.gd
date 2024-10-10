@@ -15,13 +15,15 @@ func _process(delta):
 		BoardCreated = true
 
 func createGameBoard():
-	for i in range(0,GlobalVariable.column):
-		for j in range(0,GlobalVariable.line):
+	for i in range(0,GlobalVariable.line):
+		for j in range(0,GlobalVariable.column):
 			# Créer une instance de la scène Square
 			var square_instance = NewSquare.instantiate()
 			
 			# Définir la position de l'instance
-			square_instance.position = Vector2(100 + i*50, 100 + j*50)
+			square_instance.position = Vector2(100 + j*50, 100 + i*50)
+			square_instance.i = i
+			square_instance.j = j
 			
 			# Ajouter l'instance comme enfant de ce nœud
 			add_child(square_instance)

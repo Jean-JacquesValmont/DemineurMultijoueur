@@ -22,7 +22,7 @@ func _on_spin_box_bomb_value_changed(value):
 func _on_button_play_button_down():
 	var sizeBoard = GlobalVariable.line * GlobalVariable.column
 	
-	if GlobalVariable.bomb >= sizeBoard:
+	if GlobalVariable.bomb*2 >= sizeBoard:
 		pass
 	else:
 		get_tree().change_scene_to_file("res://Scene/Game.tscn")

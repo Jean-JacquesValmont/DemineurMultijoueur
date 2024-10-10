@@ -91,20 +91,20 @@ text = "Bomb"
 
 [node name="SpinBoxLine" type="SpinBox" parent="Settings"]
 layout_mode = 0
-offset_left = 252.0
-offset_top = 119.0
-offset_right = 335.063
-offset_bottom = 150.0
+offset_left = 251.0
+offset_top = 121.0
+offset_right = 334.063
+offset_bottom = 152.0
 min_value = 2.0
 max_value = 10.0
 value = 5.0
 
 [node name="SpinBoxColumn" type="SpinBox" parent="Settings"]
 layout_mode = 0
-offset_left = 358.0
-offset_top = 119.0
-offset_right = 441.063
-offset_bottom = 150.0
+offset_left = 362.0
+offset_top = 122.0
+offset_right = 445.063
+offset_bottom = 153.0
 min_value = 2.0
 max_value = 10.0
 value = 5.0
@@ -112,9 +112,9 @@ value = 5.0
 [node name="SpinBoxBomb" type="SpinBox" parent="Settings"]
 layout_mode = 0
 offset_left = 475.0
-offset_top = 118.0
+offset_top = 122.0
 offset_right = 558.063
-offset_bottom = 149.0
+offset_bottom = 153.0
 min_value = 1.0
 max_value = 20.0
 value = 1.0
