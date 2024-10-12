@@ -24,6 +24,7 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 					get_node("SquareEmpty").visible = true
 					placeBombs(GlobalVariable.bomb)
 					hasClicked = true
+					GlobalVariable.boardGame[i][j] = "reveal"
 					GlobalVariable.firstSquareClicked = true
 				elif GlobalVariable.firstSquareClicked == true:
 					if GlobalVariable.boardGame[i][j] == "reveal":
@@ -35,6 +36,11 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 					elif GlobalVariable.boardGame[i][j] == "bomb":
 						get_node("SquareWithBomb").visible = true
 						GlobalVariable.bombExplosed = true
+			if event.button_index == MOUSE_BUTTON_RIGHT and event.is_released():
+				if get_node("SquareWithFlag").visible == false and get_node("SquareEmpty").visible == false:
+					get_node("SquareWithFlag").visible = true
+				elif get_node("SquareWithFlag").visible == true:
+					get_node("SquareWithFlag").visible = false
 
 func placeBombs(numberOfBomb):
 	var placedBombs = 0
@@ -50,14 +56,14 @@ func placeBombs(numberOfBomb):
 
 func checkSquare(iParam, jParam, offset_I, offset_J):
 	# Vérifie que les indices sont dans les limites du tableau
-	if (iParam + offset_I >= 0 and iParam + offset_I < GlobalVariable.column) and (jParam + offset_J >= 0 and jParam + offset_J < GlobalVariable.line):
+	if (iParam + offset_I >= 0 and iParam + offset_I < GlobalVariable.line) and (jParam + offset_J >= 0 and jParam + offset_J < GlobalVariable.column):
 		# Si la case contient une bombe
 		if GlobalVariable.boardGame[iParam + offset_I][jParam + offset_J] == "bomb":
 			numberOfBombAround += 1
 
 func revealSquare(iParam, jParam, offset_I, offset_J):
 	# Vérifie que les indices sont dans les limites du tableau
-	if (iParam + offset_I >= 0 and iParam + offset_I < GlobalVariable.column) and (jParam + offset_J >= 0 and jParam + offset_J < GlobalVariable.line):
+	if (iParam + offset_I >= 0 and iParam + offset_I < GlobalVariable.line) and (jParam + offset_J >= 0 and jParam + offset_J < GlobalVariable.column):
 		# Si la case est vide
 		if GlobalVariable.boardGame[iParam + offset_I][jParam + offset_J] == "hidden":
 			var numberOfChildren = get_parent().get_child_count()
@@ -113,7 +119,7 @@ func searchSquareEmpty():
 					child.get_node("NumberOfBombAround").text = str(numberOfBombAround)
 		
 	print("Board updated: ")
-	for f in range(0, GlobalVariable.column):
+	for f in range(0, GlobalVariable.line):
 		print("Line ", f ,  " : " , GlobalVariable.boardGame[f])
 
 func checkWinGame():

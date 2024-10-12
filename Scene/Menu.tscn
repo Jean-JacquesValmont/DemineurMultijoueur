@@ -35,9 +35,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -68.0
-offset_top = -87.0
+offset_top = -50.0
 offset_right = 68.0
-offset_bottom = -26.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "Jouer"
@@ -56,7 +56,7 @@ offset_bottom = 147.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Settings"]
+[node name="BoardGameText" type="Label" parent="Settings"]
 layout_mode = 0
 offset_left = 315.5
 offset_top = 36.0
@@ -96,8 +96,9 @@ offset_top = 121.0
 offset_right = 334.063
 offset_bottom = 152.0
 min_value = 2.0
-max_value = 10.0
+max_value = 13.0
 value = 9.0
+update_on_text_changed = true
 
 [node name="SpinBoxColumn" type="SpinBox" parent="Settings"]
 layout_mode = 0
@@ -106,8 +107,9 @@ offset_top = 122.0
 offset_right = 445.063
 offset_bottom = 153.0
 min_value = 2.0
-max_value = 10.0
+max_value = 13.0
 value = 9.0
+update_on_text_changed = true
 
 [node name="SpinBoxBomb" type="SpinBox" parent="Settings"]
 layout_mode = 0
@@ -116,8 +118,24 @@ offset_top = 122.0
 offset_right = 558.063
 offset_bottom = 153.0
 min_value = 1.0
-max_value = 20.0
 value = 10.0
+update_on_text_changed = true
+
+[node name="ErrorText" type="Label" parent="Settings"]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -271.5
+offset_top = 87.5
+offset_right = 273.5
+offset_bottom = 110.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
 
 [connection signal="button_down" from="ButtonPlay" to="." method="_on_button_play_button_down"]
 [connection signal="value_changed" from="Settings/SpinBoxLine" to="." method="_on_spin_box_line_value_changed"]

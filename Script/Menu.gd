@@ -23,6 +23,6 @@ func _on_button_play_button_down():
 	var sizeBoard = GlobalVariable.line * GlobalVariable.column
 	
 	if GlobalVariable.bomb*2 >= sizeBoard:
-		pass
+		get_node("Settings/ErrorText").text = "Le nombre de bombes est trop important pour la taille du tableau."
 	else:
 		get_tree().change_scene_to_file("res://Scene/Game.tscn")
