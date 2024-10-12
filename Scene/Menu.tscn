@@ -35,9 +35,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -68.0
-offset_top = -231.0
+offset_top = -87.0
 offset_right = 68.0
-offset_bottom = -170.0
+offset_bottom = -26.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "Jouer"
@@ -97,7 +97,7 @@ offset_right = 334.063
 offset_bottom = 152.0
 min_value = 2.0
 max_value = 10.0
-value = 5.0
+value = 9.0
 
 [node name="SpinBoxColumn" type="SpinBox" parent="Settings"]
 layout_mode = 0
@@ -107,7 +107,7 @@ offset_right = 445.063
 offset_bottom = 153.0
 min_value = 2.0
 max_value = 10.0
-value = 5.0
+value = 9.0
 
 [node name="SpinBoxBomb" type="SpinBox" parent="Settings"]
 layout_mode = 0
@@ -117,7 +117,7 @@ offset_right = 558.063
 offset_bottom = 153.0
 min_value = 1.0
 max_value = 20.0
-value = 1.0
+value = 10.0
 
 [connection signal="button_down" from="ButtonPlay" to="." method="_on_button_play_button_down"]
 [connection signal="value_changed" from="Settings/SpinBoxLine" to="." method="_on_spin_box_line_value_changed"]

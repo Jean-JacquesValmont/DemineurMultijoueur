@@ -27,6 +27,7 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 				else:
 					if GlobalVariable.boardGame[i][j] == null:
 						get_node("SquareEmpty").visible = true
+						hasClicked = true
 					else:
 						get_node("SquareWithBomb").visible = true
 						GlobalVariable.bombExplosed = true
@@ -46,15 +47,21 @@ func placeBombs(numberOfBomb):
 func checkSquare(iParam, jParam, offset_I, offset_J):
 	# Vérifie que les indices sont dans les limites du tableau
 	if (iParam + offset_I >= 0 and iParam + offset_I < GlobalVariable.column) and (jParam + offset_J >= 0 and jParam + offset_J < GlobalVariable.line):
+		# Si la case contient une bombe
+		if GlobalVariable.boardGame[iParam + offset_I][jParam + offset_J] == "bomb":
+			numberOfBombAround += 1
+
+func revealSquare(iParam, jParam, offset_I, offset_J):
+	# Vérifie que les indices sont dans les limites du tableau
+	if (iParam + offset_I >= 0 and iParam + offset_I < GlobalVariable.column) and (jParam + offset_J >= 0 and jParam + offset_J < GlobalVariable.line):
 		# Si la case est vide
-		if GlobalVariable.boardGame[iParam + offset_I][jParam + offset_J] == null:
+		if GlobalVariable.boardGame[iParam + offset_I][jParam + offset_J] == "hidden":
 			var numberOfChildren = get_parent().get_child_count()
 			for f in range(numberOfChildren):
 				# Vérifie si le carré correspondant est trouvé
 				if get_parent().get_child(f).i == iParam + offset_I and get_parent().get_child(f).j == jParam + offset_J:
 					get_parent().get_child(f).get_node("SquareEmpty").visible = true
-		else:
-			numberOfBombAround += 1
+					GlobalVariable.boardGame[iParam + offset_I][jParam + offset_J] = "reveal"
 
 func checkAroundSquare(iParam,jParam):
 	numberOfBombAround = 0
@@ -66,6 +73,16 @@ func checkAroundSquare(iParam,jParam):
 	checkSquare(iParam,jParam,1,-1)
 	checkSquare(iParam,jParam,0,-1)
 	checkSquare(iParam,jParam,-1,-1)
+	
+	if numberOfBombAround == 0:
+		revealSquare(iParam,jParam,-1,0)
+		revealSquare(iParam,jParam,-1,1)
+		revealSquare(iParam,jParam,0,1)
+		revealSquare(iParam,jParam,1,1)
+		revealSquare(iParam,jParam,1,0)
+		revealSquare(iParam,jParam,1,-1)
+		revealSquare(iParam,jParam,0,-1)
+		revealSquare(iParam,jParam,-1,-1)
 
 func searchSquareEmpty():
 	var numberOfChildren = get_parent().get_child_count()
@@ -79,10 +96,10 @@ func searchSquareEmpty():
 		
 		for f in range(numberOfChildren):
 			var child = get_parent().get_child(f)
-			var square_empty_node = child.get_node("SquareEmpty")
+			var squareEmptyNode = child.get_node("SquareEmpty")
 			
 			# Si le carré est déjà visible, on le traite
-			if square_empty_node.visible:
+			if squareEmptyNode.visible:
 				currentVisibleCount += 1
 				# Vérifie les cases autour de ce carré
 				checkAroundSquare(child.i, child.j)
@@ -91,4 +108,5 @@ func searchSquareEmpty():
 					child.get_node("NumberOfBombAround").visible = true
 					child.get_node("NumberOfBombAround").text = str(numberOfBombAround)
 		
-		print("Nombre de carrés vides trouvés :", currentVisibleCount)
+		#print("Nombre de carrés vides trouvés :", currentVisibleCount)
+	print("Board updated:", GlobalVariable.boardGame)

@@ -1,9 +1,9 @@
 extends Node
 
 var boardGame = []
-var line = 5
-var column = 5
-var bomb = 1
+var line = 9
+var column = 9
+var bomb = 10
 var firstSquareClicked = false
 var bombExplosed = false
 var winGame = false

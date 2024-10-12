@@ -32,15 +32,15 @@ func createBoardArray(rowSize,columnSize):
 	for i in range(rowSize):
 		var row = []
 		for j in range(columnSize):
-			row.append(null)
+			row.append("hidden")
 		GlobalVariable.boardGame.append(row)
 	#print(GlobalVariable.boardGame)
 
 func _on_button_pressed():
 	GlobalVariable.boardGame = []
-	GlobalVariable.line = 5
-	GlobalVariable.column = 5
-	GlobalVariable.bomb = 1
+	GlobalVariable.line = 9
+	GlobalVariable.column = 9
+	GlobalVariable.bomb = 10
 	GlobalVariable.firstSquareClicked = false
 	GlobalVariable.bombExplosed = false
 	GlobalVariable.winGame = false
