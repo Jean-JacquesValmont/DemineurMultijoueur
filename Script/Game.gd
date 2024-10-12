@@ -13,6 +13,11 @@ func _process(delta):
 		createBoardArray(GlobalVariable.line,GlobalVariable.column)
 		createGameBoard()
 		BoardCreated = true
+	
+	if GlobalVariable.winGame == true:
+		get_node("WinText").text = "Game win!"
+	elif GlobalVariable.bombExplosed == true:
+		get_node("WinText").text = "Game over!"
 
 func createGameBoard():
 	for i in range(0,GlobalVariable.line):

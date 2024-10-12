@@ -13,6 +13,7 @@ func _ready():
 func _process(delta):
 	if hasClicked == true:
 		searchSquareEmpty()
+		checkWinGame()
 		hasClicked = false
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
@@ -24,11 +25,14 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 					placeBombs(GlobalVariable.bomb)
 					hasClicked = true
 					GlobalVariable.firstSquareClicked = true
-				else:
-					if GlobalVariable.boardGame[i][j] == null:
+				elif GlobalVariable.firstSquareClicked == true:
+					if GlobalVariable.boardGame[i][j] == "reveal":
+						return
+					elif GlobalVariable.boardGame[i][j] == "hidden":
 						get_node("SquareEmpty").visible = true
+						GlobalVariable.boardGame[i][j] = "reveal"
 						hasClicked = true
-					else:
+					elif GlobalVariable.boardGame[i][j] == "bomb":
 						get_node("SquareWithBomb").visible = true
 						GlobalVariable.bombExplosed = true
 
@@ -108,5 +112,13 @@ func searchSquareEmpty():
 					child.get_node("NumberOfBombAround").visible = true
 					child.get_node("NumberOfBombAround").text = str(numberOfBombAround)
 		
-		#print("Nombre de carrés vides trouvés :", currentVisibleCount)
-	print("Board updated:", GlobalVariable.boardGame)
+	print("Board updated: ")
+	for f in range(0, GlobalVariable.column):
+		print("Line ", f ,  " : " , GlobalVariable.boardGame[f])
+
+func checkWinGame():
+	for f in range(0,GlobalVariable.line):
+			for ff in range(0,GlobalVariable.column):
+				if GlobalVariable.boardGame[f][ff] == "hidden":
+					return
+	GlobalVariable.winGame = true
