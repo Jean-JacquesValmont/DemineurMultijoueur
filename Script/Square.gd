@@ -2,6 +2,8 @@ extends Sprite2D
 
 var i = null
 var j = null
+var hasClicked = false
+var numberOfBombAround = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -9,7 +11,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if hasClicked == true:
+		searchSquareEmpty()
+		hasClicked = false
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
 	if GlobalVariable.bombExplosed == false and GlobalVariable.winGame == false:
@@ -18,7 +22,7 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 				if GlobalVariable.firstSquareClicked == false:
 					get_node("SquareEmpty").visible = true
 					placeBombs(GlobalVariable.bomb)
-					searchSquareEmpty()
+					hasClicked = true
 					GlobalVariable.firstSquareClicked = true
 				else:
 					if GlobalVariable.boardGame[i][j] == null:
@@ -27,7 +31,6 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 						get_node("SquareWithBomb").visible = true
 						GlobalVariable.bombExplosed = true
 
-# Placer aléatoirement les bombes dans le tableau
 func placeBombs(numberOfBomb):
 	var placedBombs = 0
 	while placedBombs < numberOfBomb:
@@ -50,8 +53,11 @@ func checkSquare(iParam, jParam, offset_I, offset_J):
 				# Vérifie si le carré correspondant est trouvé
 				if get_parent().get_child(f).i == iParam + offset_I and get_parent().get_child(f).j == jParam + offset_J:
 					get_parent().get_child(f).get_node("SquareEmpty").visible = true
+		else:
+			numberOfBombAround += 1
 
 func checkAroundSquare(iParam,jParam):
+	numberOfBombAround = 0
 	checkSquare(iParam,jParam,-1,0)
 	checkSquare(iParam,jParam,-1,1)
 	checkSquare(iParam,jParam,0,1)
@@ -63,9 +69,26 @@ func checkAroundSquare(iParam,jParam):
 
 func searchSquareEmpty():
 	var numberOfChildren = get_parent().get_child_count()
-	for f in range(numberOfChildren):
-		if get_parent().get_child(f).get_node("SquareEmpty").visible == true:
-			var SquareSelectI = get_parent().get_child(f).i
-			var SquareSelectJ = get_parent().get_child(f).j
-			checkAroundSquare(SquareSelectI,SquareSelectJ)
+	var prevVisibleCount = -1
+	var currentVisibleCount = 0
+	
+	# Répète jusqu'à ce que le nombre de carrés visibles ne change plus
+	while currentVisibleCount != prevVisibleCount:
+		prevVisibleCount = currentVisibleCount
+		currentVisibleCount = 0
+		
+		for f in range(numberOfChildren):
+			var child = get_parent().get_child(f)
+			var square_empty_node = child.get_node("SquareEmpty")
 			
+			# Si le carré est déjà visible, on le traite
+			if square_empty_node.visible:
+				currentVisibleCount += 1
+				# Vérifie les cases autour de ce carré
+				checkAroundSquare(child.i, child.j)
+				
+				if numberOfBombAround > 0:
+					child.get_node("NumberOfBombAround").visible = true
+					child.get_node("NumberOfBombAround").text = str(numberOfBombAround)
+		
+		print("Nombre de carrés vides trouvés :", currentVisibleCount)

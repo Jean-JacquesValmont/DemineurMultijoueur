@@ -30,4 +30,13 @@ visible = false
 texture = ExtResource("4_eknnu")
 centered = false
 
+[node name="NumberOfBombAround" type="Label" parent="."]
+visible = false
+offset_right = 100.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
