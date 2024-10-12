@@ -20,13 +20,13 @@ func createGameBoard():
 			# Créer une instance de la scène Square
 			var square_instance = NewSquare.instantiate()
 			
-			# Définir la position de l'instance
+			# Définir les paramètres de l'instance
 			square_instance.position = Vector2(100 + j*50, 100 + i*50)
 			square_instance.i = i
 			square_instance.j = j
 			
 			# Ajouter l'instance comme enfant de ce nœud
-			add_child(square_instance)
+			get_node("BoardGame").add_child(square_instance)
 
 func createBoardArray(rowSize,columnSize):
 	for i in range(rowSize):
@@ -42,4 +42,6 @@ func _on_button_pressed():
 	GlobalVariable.column = 5
 	GlobalVariable.bomb = 1
 	GlobalVariable.firstSquareClicked = false
+	GlobalVariable.bombExplosed = false
+	GlobalVariable.winGame = false
 	get_tree().change_scene_to_file("res://Scene/Menu.tscn")
