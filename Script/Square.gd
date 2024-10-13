@@ -20,27 +20,30 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 	if GlobalVariable.bombExplosed == false and GlobalVariable.winGame == false:
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
-				if GlobalVariable.firstSquareClicked == false:
-					get_node("SquareEmpty").visible = true
-					placeBombs(GlobalVariable.bomb)
-					hasClicked = true
-					GlobalVariable.boardGame[i][j] = "reveal"
-					GlobalVariable.firstSquareClicked = true
-				elif GlobalVariable.firstSquareClicked == true:
-					if GlobalVariable.boardGame[i][j] == "reveal":
-						return
-					elif GlobalVariable.boardGame[i][j] == "hidden":
-						get_node("SquareEmpty").visible = true
-						GlobalVariable.boardGame[i][j] = "reveal"
-						hasClicked = true
-					elif GlobalVariable.boardGame[i][j] == "bomb":
-						get_node("SquareWithBomb").visible = true
-						GlobalVariable.bombExplosed = true
+				rpc("clickSquare")
 			if event.button_index == MOUSE_BUTTON_RIGHT and event.is_released():
 				if get_node("SquareWithFlag").visible == false and get_node("SquareEmpty").visible == false:
 					get_node("SquareWithFlag").visible = true
 				elif get_node("SquareWithFlag").visible == true:
 					get_node("SquareWithFlag").visible = false
+
+@rpc("any_peer", "call_local") func clickSquare():
+	if GlobalVariable.firstSquareClicked == false:
+		get_node("SquareEmpty").visible = true
+		placeBombs(GlobalVariable.bomb)
+		hasClicked = true
+		GlobalVariable.boardGame[i][j] = "reveal"
+		GlobalVariable.firstSquareClicked = true
+	elif GlobalVariable.firstSquareClicked == true:
+		if GlobalVariable.boardGame[i][j] == "reveal":
+			return
+		elif GlobalVariable.boardGame[i][j] == "hidden":
+			get_node("SquareEmpty").visible = true
+			GlobalVariable.boardGame[i][j] = "reveal"
+			hasClicked = true
+		elif GlobalVariable.boardGame[i][j] == "bomb":
+			get_node("SquareWithBomb").visible = true
+			GlobalVariable.bombExplosed = true
 
 func placeBombs(numberOfBomb):
 	var placedBombs = 0
@@ -128,3 +131,6 @@ func checkWinGame():
 				if GlobalVariable.boardGame[f][ff] == "hidden":
 					return
 	GlobalVariable.winGame = true
+
+func _enter_tree():
+	set_multiplayer_authority(name.to_int())

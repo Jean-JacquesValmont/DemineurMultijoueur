@@ -1,5 +1,6 @@
 extends Node
 
+var peer = ENetMultiplayerPeer.new()
 var boardGame = []
 var line = 9
 var column = 9
