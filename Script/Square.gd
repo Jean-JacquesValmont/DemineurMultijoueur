@@ -4,10 +4,11 @@ var i = null
 var j = null
 var hasClicked = false
 var numberOfBombAround = 0
+var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -20,6 +21,7 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 	if GlobalVariable.bombExplosed == false and GlobalVariable.winGame == false:
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+				rpc("firstClickSeed")
 				rpc("clickSquare")
 			if event.button_index == MOUSE_BUTTON_RIGHT and event.is_released():
 				if get_node("SquareWithFlag").visible == false and get_node("SquareEmpty").visible == false:
@@ -45,11 +47,20 @@ func _on_area_2d_input_event(viewport, event, shape_idx):
 			get_node("SquareWithBomb").visible = true
 			GlobalVariable.bombExplosed = true
 
+@rpc("any_peer", "call_local") func setRandomSeed(seed_value: int):
+	rng.seed = seed_value # Fixe la graine pour avoir la même séquence sur tous les joueurs
+
+@rpc("any_peer", "call_local") func firstClickSeed():
+	var seed_value = RandomNumberGenerator.new().randi()
+	# Envoie la graine à tous les joueurs pour la synchronisation
+	rpc("setRandomSeed", seed_value)
+
+# Place les bombes avec un générateur de nombres aléatoires synchronisé
 func placeBombs(numberOfBomb):
 	var placedBombs = 0
 	while placedBombs < numberOfBomb:
-		var random_row = randi() % int(GlobalVariable.line)
-		var random_col = randi() % int(GlobalVariable.column)
+		var random_row = rng.randi_range(0, int(GlobalVariable.line) - 1)
+		var random_col = rng.randi_range(0, int(GlobalVariable.column) - 1)
 
 		# Vérifie s'il n'y a pas déjà une bombe à cette position
 		if GlobalVariable.boardGame[random_row][random_col] != "bomb" and random_row != i and random_col != j:

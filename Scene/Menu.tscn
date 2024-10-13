@@ -43,6 +43,13 @@ offset_right = 531.0
 offset_bottom = 661.0
 text = "Join"
 
+[node name="MultiplayerText" type="Label" parent="."]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 675.0
+offset_right = 558.0
+offset_bottom = 708.0
+
 [node name="ButtonPlay" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 7
@@ -154,7 +161,6 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 15
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Scene/Square.tscn")
 spawn_path = NodePath("..")
 
 [connection signal="pressed" from="ButtonHost" to="." method="_on_button_host_pressed"]

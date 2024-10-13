@@ -1,7 +1,5 @@
 extends Control
 
-@export var player_scene: PackedScene = preload("res://Scene/Square.tscn")
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -15,15 +13,15 @@ func _on_button_host_pressed():
 	multiplayer.multiplayer_peer = GlobalVariable.peer
 	multiplayer.peer_connected.connect(_add_player)
 	_add_player()
+	get_node("MultiplayerText").text = "Vous venez de créer un salon."
 
 func _add_player(id = 1):
-	var player = player_scene.instantiate()
-	player.name = str(id)
-	call_deferred("add_child",player)
+	call_deferred("add_child")
 
 func _on_button_join_pressed():
 	GlobalVariable.peer.create_client("localhost", 135)
 	multiplayer.multiplayer_peer = GlobalVariable.peer
+	get_node("MultiplayerText").text = "Vous venez de rejoindre un salon."
 
 func _on_spin_box_line_value_changed(value):
 	GlobalVariable.line = get_node("Settings/SpinBoxLine").value
