@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://mmi85wtqicyp"]
+
+[ext_resource type="Script" path="res://Script/Game.gd" id="1_gclba"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_gclba")
+
+[node name="BoardGame" type="Node2D" parent="."]
+
+[node name="ButtonBack" type="Button" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 350.0
+offset_right = 461.0
+offset_bottom = 44.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+text = "Back"
+
+[node name="WinText" type="Label" parent="."]
+offset_left = 291.0
+offset_top = 51.0
+offset_right = 522.0
+offset_bottom = 74.0
+
+[connection signal="pressed" from="ButtonBack" to="." method="_on_button_pressed"]

@@ -161,6 +161,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 15
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scene/Player.tscn")
 spawn_path = NodePath("..")
 
 [connection signal="pressed" from="ButtonHost" to="." method="_on_button_host_pressed"]

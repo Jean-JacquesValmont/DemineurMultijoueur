@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://difj2p4mykk0v"]
+[gd_scene load_steps=7 format=3 uid="uid://difj2p4mykk0v"]
 
 [ext_resource type="Texture2D" uid="uid://18uyqpy32qd1" path="res://Image/Square.png" id="1_mx2up"]
 [ext_resource type="Script" path="res://Script/Square.gd" id="2_gpugb"]
@@ -8,11 +8,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d7kvq"]
 size = Vector2(100, 100)
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_851ph"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/replication_mode = 1
 
 [node name="Square" type="Sprite2D"]
 scale = Vector2(0.5, 0.5)
@@ -49,8 +44,5 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 70
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_851ph")
 
 [connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
