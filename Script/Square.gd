@@ -15,49 +15,62 @@ func _process(delta):
 		searchSquareEmpty()
 		checkWinGame()
 		hasClicked = false
+	get_parent().get_parent().get_node("TimerTextPlayer1").text = "Temps restant: %.2f" % get_parent().get_parent().get_node("TimerPlayer1").time_left
+	get_parent().get_parent().get_node("TimerTextPlayer2").text = "Temps restant: %.2f" % get_parent().get_parent().get_node("TimerPlayer2").time_left
 
 func _on_area_2d_input_event(viewport, event, shape_idx):
-	if multiplayer.get_unique_id() == 1 and GlobalVariable.turnPlayer1 == true:
-		if GlobalVariable.bombExplosed == false and GlobalVariable.winGame == false:
-			if event is InputEventMouseButton:
+	if GlobalVariable.bombExplosed == false and GlobalVariable.winGame == false:
+		if event is InputEventMouseButton:
+			if multiplayer.get_unique_id() == 1 and GlobalVariable.turnPlayer1 == true:
 				if event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 					rpc("firstClickSeed")
 					rpc("clickSquare")
-				if event.button_index == MOUSE_BUTTON_RIGHT and event.is_released():
-					if get_node("SquareWithFlag").visible == false and get_node("SquareEmpty").visible == false:
-						get_node("SquareWithFlag").visible = true
-					elif get_node("SquareWithFlag").visible == true:
-						get_node("SquareWithFlag").visible = false
-	if multiplayer.get_unique_id() != 1 and GlobalVariable.turnPlayer1 == false:
-		if GlobalVariable.bombExplosed == false and GlobalVariable.winGame == false:
-			if event is InputEventMouseButton:
+					rpc("startTimerPlayer2")
+			if multiplayer.get_unique_id() != 1 and GlobalVariable.turnPlayer1 == false:
 				if event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 					rpc("firstClickSeed")
 					rpc("clickSquare")
-				if event.button_index == MOUSE_BUTTON_RIGHT and event.is_released():
-					if get_node("SquareWithFlag").visible == false and get_node("SquareEmpty").visible == false:
-						get_node("SquareWithFlag").visible = true
-					elif get_node("SquareWithFlag").visible == true:
-						get_node("SquareWithFlag").visible = false
+					rpc("startTimerPlayer1")
+			if event.button_index == MOUSE_BUTTON_RIGHT and event.is_released():
+				displayFlag()
 
 @rpc("any_peer", "call_local") func clickSquare():
 	if GlobalVariable.firstSquareClicked == false:
-		get_node("SquareEmpty").visible = true
-		placeBombs(GlobalVariable.bomb)
-		hasClicked = true
-		GlobalVariable.boardGame[i][j] = "reveal"
-		GlobalVariable.firstSquareClicked = true
+		firstClickSquare()
 	elif GlobalVariable.firstSquareClicked == true:
-		if GlobalVariable.boardGame[i][j] == "reveal":
-			return
-		elif GlobalVariable.boardGame[i][j] == "hidden":
-			get_node("SquareEmpty").visible = true
-			GlobalVariable.boardGame[i][j] = "reveal"
-			hasClicked = true
-		elif GlobalVariable.boardGame[i][j] == "bomb":
-			get_node("SquareWithBomb").visible = true
-			GlobalVariable.bombExplosed = true
+		noFirstClickSquare()
 	GlobalVariable.turnPlayer1 = !GlobalVariable.turnPlayer1
+
+func firstClickSquare():
+	get_node("SquareEmpty").visible = true
+	placeBombs(GlobalVariable.bomb)
+	hasClicked = true
+	GlobalVariable.boardGame[i][j] = "reveal"
+	GlobalVariable.firstSquareClicked = true
+
+func noFirstClickSquare():
+	if GlobalVariable.boardGame[i][j] == "reveal":
+		return
+	elif GlobalVariable.boardGame[i][j] == "hidden":
+		get_node("SquareEmpty").visible = true
+		GlobalVariable.boardGame[i][j] = "reveal"
+		hasClicked = true
+	elif GlobalVariable.boardGame[i][j] == "bomb":
+		get_node("SquareWithBomb").visible = true
+		if multiplayer.get_unique_id() == 1 and GlobalVariable.turnPlayer1 == true:
+			GlobalVariable.bombExplosed = true
+		if multiplayer.get_unique_id() != 1 and GlobalVariable.turnPlayer1 == true:
+			GlobalVariable.winGame = true
+		if multiplayer.get_unique_id() == 1 and GlobalVariable.turnPlayer1 == false:
+			GlobalVariable.winGame = true
+		if multiplayer.get_unique_id() != 1 and GlobalVariable.turnPlayer1 == false:
+			GlobalVariable.bombExplosed = true
+
+func displayFlag():
+	if get_node("SquareWithFlag").visible == false and get_node("SquareEmpty").visible == false:
+		get_node("SquareWithFlag").visible = true
+	elif get_node("SquareWithFlag").visible == true:
+		get_node("SquareWithFlag").visible = false
 
 @rpc("any_peer", "call_local") func setRandomSeed(seed_value: int):
 	GlobalVariable.rng.seed = seed_value # Fixe la graine pour avoir la même séquence sur tous les joueurs
@@ -148,12 +161,17 @@ func searchSquareEmpty():
 	for f in range(0, GlobalVariable.line):
 		print("Line ", f ,  " : " , GlobalVariable.boardGame[f])
 
+@rpc("any_peer", "call_local") func startTimerPlayer1():
+	get_parent().get_parent().get_node("TimerPlayer1").start()
+	get_parent().get_parent().get_node("TimerPlayer2").stop()
+
+@rpc("any_peer", "call_local") func startTimerPlayer2():
+	get_parent().get_parent().get_node("TimerPlayer2").start()
+	get_parent().get_parent().get_node("TimerPlayer1").stop()
+	
 func checkWinGame():
 	for f in range(0,GlobalVariable.line):
 			for ff in range(0,GlobalVariable.column):
 				if GlobalVariable.boardGame[f][ff] == "hidden":
 					return
 	GlobalVariable.winGame = true
-
-func _enter_tree():
-	set_multiplayer_authority(name.to_int())

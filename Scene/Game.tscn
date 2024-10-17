@@ -23,4 +23,24 @@ offset_top = 51.0
 offset_right = 522.0
 offset_bottom = 74.0
 
+[node name="TimerPlayer1" type="Timer" parent="."]
+one_shot = true
+
+[node name="TimerTextPlayer1" type="Label" parent="."]
+offset_left = 140.0
+offset_top = 7.0
+offset_right = 266.0
+offset_bottom = 47.0
+
+[node name="TimerPlayer2" type="Timer" parent="."]
+one_shot = true
+
+[node name="TimerTextPlayer2" type="Label" parent="."]
+offset_left = 546.0
+offset_top = 7.0
+offset_right = 672.0
+offset_bottom = 47.0
+
 [connection signal="pressed" from="ButtonBack" to="." method="_on_button_pressed"]
+[connection signal="timeout" from="TimerPlayer1" to="." method="_on_timer_player_1_timeout"]
+[connection signal="timeout" from="TimerPlayer2" to="." method="_on_timer_player_2_timeout"]

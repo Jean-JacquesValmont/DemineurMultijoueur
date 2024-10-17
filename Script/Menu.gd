@@ -39,6 +39,9 @@ func _on_spin_box_column_value_changed(value):
 func _on_spin_box_bomb_value_changed(value):
 	GlobalVariable.bomb = get_node("Settings/SpinBoxBomb").value
 
+func _on_spin_box_timer_value_changed(value):
+	GlobalVariable.timer = get_node("Settings/SpinBoxTimer").value
+
 @rpc("any_peer", "call_local") func changeScene():
 	get_tree().change_scene_to_file("res://Scene/Game.tscn")
 

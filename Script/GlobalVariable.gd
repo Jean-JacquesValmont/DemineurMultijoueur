@@ -6,6 +6,7 @@ var boardGame = []
 var line = 9
 var column = 9
 var bomb = 10
+var timer = 10
 var turnPlayer1 = true
 var firstSquareClicked = false
 var bombExplosed = false
